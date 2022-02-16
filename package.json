@@ -1,0 +1,20 @@
+{
+  "name": "sls-cron-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neripark/sls-cron-playground.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neripark/sls-cron-playground/issues"
+  },
+  "homepage": "https://github.com/neripark/sls-cron-playground#readme"
+}
