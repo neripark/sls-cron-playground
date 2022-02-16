@@ -7,8 +7,11 @@ exports.run = async (event, context) => {
   console.log(`Your cron function "${context.functionName}" ran at ${time}, neripark!`);
 };
 
-exports.lighthouse = async () => {
-  console.log(execLighthouse());
+exports.lighthouse = async (event) => {
+  // todo: invoke だとevent は空文字？を確認する
+  // console.log("event::", event);
+  // console.log("typeof event::", typeof event);
+  return execLighthouse(event);
 };
 
 // esm 書けない、悔しい

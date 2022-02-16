@@ -1,6 +1,3 @@
-// import { Handler } from 'aws-lambda';
-
-// CommonJS形式のモジュールを使う場合は `* as` が必要
 const lighthouse = require('lighthouse');
 const log = require('lighthouse-logger');
 const chromeLauncher = require('chrome-launcher');
@@ -12,8 +9,7 @@ const opts = {
 };
 log.setLevel(opts.logLevel);
 
-// function launchChromeAndRunLighthouse(url: string, opts: any, config = null) {
-async function launchChromeAndRunLighthouse(url, opts, config = null) {
+const launchChromeAndRunLighthouse = async (url, opts, config = null) => {
   return chromeLauncher.launch({ chromeFlags: opts.chromeFlags }).then((chrome) => {
     opts.port = chrome.port;
     return lighthouse(url, opts, config).then((results) => {
@@ -40,47 +36,41 @@ async function launchChromeAndRunLighthouse(url, opts, config = null) {
   });
 }
 
-const execLighthouse = async () => {
-  return launchChromeAndRunLighthouse("https://google.com", opts).then((results) => {
-    // 一旦標準出力に表示
-    console.table(results);
-    return results;
-  });
+const createResponseBody = (event) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      {
+        message: 'Go Serverless v1.0! Your function executed successfully!',
+        input: event,
+      },
+      null,
+      2
+    ),
+  };
 }
 
-
-// const lighthouse = (event) => {
-//   console.log("LOGGER:: lighthouse kicked.");
-//   return "lighthouse was kicked!!";
-
-//   // // いったん非同期処理を待たずにレスポンスさせる
-//   // execLighthouse()
-//   //   .then((value) => {
-//   //     console.log(`LOGGER::result:: ${JSON.stringify(value)}`);
-//   //   })
-//   //   .catch(e => {
-//   //     console.error(e)
-//   //   });
-
-//   // const response = {
-//   //   statusCode: 200,
-//   //   body: JSON.stringify(
-//   //     {
-//   //       message: 'Go Serverless v1.0! Your function executed successfully!',
-//   //       input: event,
-//   //     },
-//   //     null,
-//   //     2
-//   //   ),
-//   // };
-//   // // console.log(`LOGGER::response:: ${JSON.stringify(response)}`);
-
-//   // return new Promise((resolve) => {
-//   //   resolve(response)
-//   // })
-// }
-
-exports.execLighthouse = (event) => {
+const execLighthouse = (event) => {
   console.log("LOGGER:: lighthouse kicked.");
-  return "lighthouse was kicked!!";
+
+  // いったん非同期処理を待たずにレスポンスさせる
+  launchChromeAndRunLighthouse("https://google.com", opts)
+    .then((results) => {
+      console.table(results);
+      return results;
+    })
+    .then((value) => {
+      console.log(`LOGGER::result:: ${JSON.stringify(value)}`);
+    })
+    .catch(e => {
+      console.error(e)
+    });
+
+  const response = createResponseBody(event);
+
+  return new Promise((resolve) => {
+    resolve(response)
+  })
 }
+
+exports.execLighthouse = execLighthouse;
