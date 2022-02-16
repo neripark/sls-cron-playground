@@ -19,6 +19,10 @@ functions:
     events:
       # Invoke Lambda function every 2nd minute from Mon-Fri
       - schedule: cron(10,30,50 * ? * MON-FRI *)
+  lighthouse:
+    handler: handler.lighthouse
+    events:
+      - schedule: cron(10,30,50 * ? * MON-FRI *)
 
 
 
