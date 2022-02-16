@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/neripark/sls-cron-playground/issues"
   },
-  "homepage": "https://github.com/neripark/sls-cron-playground#readme"
+  "homepage": "https://github.com/neripark/sls-cron-playground#readme",
+  "dependencies": {
+    "serverless": "^3.2.1"
+  }
 }
