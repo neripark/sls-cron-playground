@@ -9,13 +9,19 @@ provider:
   runtime: nodejs14.x
 
 functions:
-  rateHandler:
-    handler: handler.run
-    events:
-      # Invoke Lambda function every minute
-      - schedule: rate(1 minute)
+  # rateHandler:
+  #   handler: handler.run
+  #   events:
+  #     # Invoke Lambda function every minute
+  #     - schedule: rate(1 hour)
   cronHandler:
     handler: handler.run
     events:
       # Invoke Lambda function every 2nd minute from Mon-Fri
       - schedule: cron(0/2 * ? * MON-FRI *)
+
+
+
+# Note:
+# - rateHandler.handler と cronHandler.handlerを両方定義したら、rateHandler のみがAWS側に認識された。
+#   - rateHandler のほうをコメントアウトしてデプロイしたら、 cronHandler のログは出るようになったが rateHander のロググループが消えてしまった
