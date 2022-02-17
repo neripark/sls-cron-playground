@@ -25,7 +25,8 @@ functions:
   lighthouse:
     handler: handler.lighthouse
     events:
-      - schedule: cron(10,30,50 * ? * MON-FRI *)
+      # - schedule: cron(10,30,50 * ? * MON-FRI *)
+      - schedule: cron(0 12 ? * FRI *)
 plugins:
   - serverless-layers
 custom:
