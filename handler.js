@@ -10,7 +10,7 @@ exports.run = async (event, context) => {
 exports.lighthouse = async (event) => {
   // todo: invoke だとevent は空文字？を確認する
   console.log("event::", event);
-  console.log("typeof event::", typeof event);
+  console.log("message::", "use tokyo region.");
   return execLighthouse(event);
 };
 

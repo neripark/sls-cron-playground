@@ -17,11 +17,11 @@ functions:
   #   events:
   #     # Invoke Lambda function every minute
   #     - schedule: rate(1 hour)
-  cronHandler:
-    handler: handler.run
-    events:
-      # Invoke Lambda function every 2nd minute from Mon-Fri
-      - schedule: cron(10,30,50 * ? * MON-FRI *)
+  # cronHandler:
+  #   handler: handler.run
+  #   events:
+  #     # Invoke Lambda function every 2nd minute from Mon-Fri
+  #     - schedule: cron(10,30,50 * ? * MON-FRI *)
   lighthouse:
     handler: handler.lighthouse
     events:
