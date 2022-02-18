@@ -1,5 +1,5 @@
 const lighthouse = require('lighthouse');
-const log = require('lighthouse-logger');
+// const log = require('lighthouse-logger');
 const chromeLauncher = require('chrome-launcher');
 
 const opts = {
@@ -7,7 +7,7 @@ const opts = {
   //chromeFlags: ["--disable-gpu"],
   logLevel: "info"
 };
-log.setLevel(opts.logLevel);
+// log.setLevel(opts.logLevel);
 
 const launchChromeAndRunLighthouse = async (url, opts, config = null) => {
   return chromeLauncher.launch({ chromeFlags: opts.chromeFlags }).then((chrome) => {
@@ -74,3 +74,4 @@ const execLighthouse = (event) => {
 }
 
 exports.execLighthouse = execLighthouse;
+// exports.execLighthouse = () => console.log("simple logger by neripark.");

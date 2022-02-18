@@ -7,6 +7,8 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs14.x
+  # S3のバケットに合わせた
+  # 他のサービスも全部東京リージョンになるので注意
   region: ap-northeast-1
 
 functions:
@@ -15,17 +17,22 @@ functions:
   #   events:
   #     # Invoke Lambda function every minute
   #     - schedule: rate(1 hour)
-  cronHandler:
-    handler: handler.run
-    events:
-      # Invoke Lambda function every 2nd minute from Mon-Fri
-      - schedule: cron(10,30,50 * ? * MON-FRI *)
+  # cronHandler:
+  #   handler: handler.run
+  #   events:
+  #     # Invoke Lambda function every 2nd minute from Mon-Fri
+  #     - schedule: cron(10,30,50 * ? * MON-FRI *)
   lighthouse:
     handler: handler.lighthouse
     events:
-      - schedule: cron(10,30,50 * ? * MON-FRI *)
-
-
+      # - schedule: cron(10,30,50 * ? * MON-FRI *)
+      - schedule: cron(0 12 ? * FRI *)
+plugins:
+  - serverless-layers
+custom:
+  serverless-layers:
+    layersDeploymentBucket: sls-lambda-node-cron-layer
+    # dependenciesPath: ./package.json
 
 # Note:
 # - rateHandler.handler と cronHandler.handlerを両方定義したら、rateHandler のみがAWS側に認識された。
