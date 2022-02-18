@@ -1,77 +1,80 @@
-const lighthouse = require('lighthouse');
-// const log = require('lighthouse-logger');
-const chromeLauncher = require('chrome-launcher');
+// import chromium from 'chrome-aws-lambda'
+// import { Browser } from 'puppeteer-core';
+// import lighthouse  from "lighthouse";
+// import metrics from "datadog-metrics";
+// import { URL } from "url";
 
-const opts = {
-  chromeFlags: ["--headless", "--disable-gpu"],
-  //chromeFlags: ["--disable-gpu"],
-  logLevel: "info"
+const chromium = require('chrome-aws-lambda');
+const lighthouse  = require( "lighthouse");
+const { URL } = require("url");
+
+const chromeFlags = [
+  "--headless",
+  "--disable-gpu",
+  "--no-sandbox",
+  "--window-size=1080,1920",
+];
+// const loginUrl = "ここにログインページのURL";
+const auditTargetUrl = "https://google.com";
+
+// metrics.init({ 
+//   apiKey: 'ここに API キー',
+//   host: 'myhost',
+//   prefix: 'myapp.'
+// });
+
+// export const audit = async () => {
+exports.audit = async () => {
+  console.log("kicked audit!!");
+  let browser;
+
+  try {
+    // puppeteer を利用して、ブラウザを立ち上げておく
+    browser = await chromium.puppeteer.launch({
+      args: [...chromium.args, ...chromeFlags],
+      defaultViewport: chromium.defaultViewport,
+      timeout: 0,
+      executablePath: await chromium.executablePath,
+    });
+
+    // // puppeteer を利用して、ログイン状態にしておく
+    // // （アプリケーションの実装に沿って適宜書き換えてください）
+    // const page = await browser.newPage();
+    // await page.goto(loginUrl);
+    // const emailInput = await page.$("input#email");
+    // await emailInput.type("ここにメールアドレス");
+    // const passwordInput = await page.$("input#password");
+    // await passwordInput.type("ここにパスワード");
+    // const loginButton = await page.$("button#login");
+    // await loginButton.clickAndWaitForNavigation();
+
+    // Lighthouse 実行（ここの設定内容はもっと工夫の余地があるかも）
+    const runnerResult = await lighthouse(auditTargetUrl, {
+      logLevel: "info",
+      output: "html",
+      onlyCategories: ["performance"],
+      chromeFlags: chromeFlags,
+      port: new URL(browser.wsEndpoint()).port,
+    });
+    const { audits } = runnerResult.lhr;
+
+    // スコアの抽出(必要とあらば拡張してください)
+    // const score = [
+    [
+      "server-response-time",
+      "first-contentful-paint",
+      "first-meaningful-paint",
+      "interactive",
+    ].forEach((key) => {
+       // 必要に応じて丸め処理などをしてください
+       const value = audits[key].numericValue
+       console.log(`score::${key}::`, value);
+      //  metrics.gauge(key, value)
+    });
+
+    await browser.close();
+  } catch (e) {
+    console.error(e);
+    await browser.close();
+  }
 };
-// log.setLevel(opts.logLevel);
-
-const launchChromeAndRunLighthouse = async (url, opts, config = null) => {
-  return chromeLauncher.launch({ chromeFlags: opts.chromeFlags }).then((chrome) => {
-    opts.port = chrome.port;
-    return lighthouse(url, opts, config).then((results) => {
-      // results.lhr はよく見るスコアリングの元データ
-      // https://github.com/GoogleChrome/lighthouse/blob/master/types/lhr.d.ts
-      const {
-        // "time-to-first-byte": ttfb,
-        // "first-contentful-paint": fcp,
-        // "first-meaningful-paint": fmp,
-        // "speed-index": speedindex,
-        // interactive,
-        metrics,
-      } = results.lhr.audits;
-
-      return chrome.kill().then(() => ({
-        // TTFB: Math.round(ttfb.numericValue),
-        FIRST_PAINT: metrics.details.items[0].observedFirstPaint,
-        // FMP: Math.round(fmp.numericValue),
-        // FCP: Math.round(fcp.numericValue),
-        // SPEED_INDEX: Math.round(speedindex.numericValue),
-        // TTI: Math.round(interactive.numericValue),
-      }));
-    });
-  });
-}
-
-const createResponseBody = (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
-}
-
-const execLighthouse = (event) => {
-  console.log("LOGGER:: lighthouse kicked.");
-
-  // いったん非同期処理を待たずにレスポンスさせる
-  launchChromeAndRunLighthouse("https://google.com", opts)
-    .then((results) => {
-      console.table(results);
-      return results;
-    })
-    .then((value) => {
-      console.log(`LOGGER::result:: ${JSON.stringify(value)}`);
-    })
-    .catch(e => {
-      console.error(e)
-    });
-
-  const response = createResponseBody(event);
-
-  return new Promise((resolve) => {
-    resolve(response)
-  })
-}
-
-exports.execLighthouse = execLighthouse;
-// exports.execLighthouse = () => console.log("simple logger by neripark.");

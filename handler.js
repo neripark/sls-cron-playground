@@ -1,7 +1,6 @@
 'use strict';
 
-// const { execLighthouse } = require("./src/execLighthouse");
-const { audit } = require("./src/execLighthouseChromium");
+const { audit } = require("./src/execLighthouse");
 
 exports.run = async (event, context) => {
   const time = new Date();
@@ -9,10 +8,7 @@ exports.run = async (event, context) => {
 };
 
 exports.lighthouse = async (event) => {
-  // todo: invoke だとevent は空文字？を確認する
   console.log("event::", event);
-  console.log("message::", "use tokyo region.");
-  // return execLighthouse(event);
 
   // ref: https://chuckwebtips.hatenablog.com/entry/2021/05/14/220648
   return audit();
