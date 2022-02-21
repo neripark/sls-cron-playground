@@ -30,6 +30,7 @@ functions:
     timeout: 60
 plugins:
   - serverless-layers
+  - serverless-plugin-typescript
 custom:
   serverless-layers:
     layersDeploymentBucket: sls-lambda-node-cron-layer
