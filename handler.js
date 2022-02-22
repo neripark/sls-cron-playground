@@ -1,6 +1,8 @@
 'use strict';
 
-const { audit } = require("./src/execLighthouse");
+// const { audit } = require("./src/execLighthouse");
+
+const { sendMetricsToDatadog } = require("./src/sendMetricsToDatadog");
 
 exports.run = async (event, context) => {
   const time = new Date();
@@ -10,9 +12,11 @@ exports.run = async (event, context) => {
 exports.lighthouse = async (event) => {
   console.log("event::", event);
   console.log("process.env.envName::", process.env.envName);
+  console.log("process.env.DATADOG_API_KEY::", process.env.DATADOG_API_KEY);
 
   // ref: https://chuckwebtips.hatenablog.com/entry/2021/05/14/220648
-  return audit();
+  // return audit();
+  return sendMetricsToDatadog();
 };
 
 // esm 書けない、悔しい
