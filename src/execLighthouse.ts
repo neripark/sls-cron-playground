@@ -4,9 +4,15 @@
 // import metrics from "datadog-metrics";
 // import { URL } from "url";
 
-const chromium = require('chrome-aws-lambda');
-const lighthouse  = require( "lighthouse");
-const { URL } = require("url");
+// const chromium = require('chrome-aws-lambda');
+// const lighthouse  = require( "lighthouse");
+// const { URL } = require("url");
+
+// import chromium from 'chrome-aws-lambda'
+import Chromium from 'chrome-aws-lambda';
+import lighthouse from "lighthouse"; // たぶんTS対応していない
+import { Browser } from 'puppeteer-core';
+import { URL } from "url";
 
 const chromeFlags = [
   "--headless",
@@ -23,18 +29,18 @@ const auditTargetUrl = "https://google.com";
 //   prefix: 'myapp.'
 // });
 
-// export const audit = async () => {
-exports.audit = async () => {
+export const audit = async () => {
+// exports.audit = async () => {
   console.log("kicked audit!!");
-  let browser;
+  let browser: Browser;
 
   try {
     // puppeteer を利用して、ブラウザを立ち上げておく
-    browser = await chromium.puppeteer.launch({
-      args: [...chromium.args, ...chromeFlags],
-      defaultViewport: chromium.defaultViewport,
+    browser = await Chromium.puppeteer.launch({
+      args: [...Chromium.args, ...chromeFlags],
+      defaultViewport: Chromium.defaultViewport,
       timeout: 0,
-      executablePath: await chromium.executablePath,
+      executablePath: await Chromium.executablePath,
     });
 
     // // puppeteer を利用して、ログイン状態にしておく
@@ -75,6 +81,6 @@ exports.audit = async () => {
     await browser.close();
   } catch (e) {
     console.error(e);
-    await browser.close();
+    await browser!.close();
   }
 };

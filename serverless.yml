@@ -34,6 +34,7 @@ functions:
       datadogApiKey: ${env.DATADOG_API_KEY}
 plugins:
   - serverless-layers
+  - serverless-plugin-typescript
 custom:
   serverless-layers:
     layersDeploymentBucket: sls-lambda-node-cron-layer
