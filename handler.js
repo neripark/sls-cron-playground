@@ -9,6 +9,7 @@ exports.run = async (event, context) => {
 
 exports.lighthouse = async (event) => {
   console.log("event::", event);
+  console.log("process.env.envName::", process.env.envName);
 
   // ref: https://chuckwebtips.hatenablog.com/entry/2021/05/14/220648
   return audit();

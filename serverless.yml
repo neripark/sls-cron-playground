@@ -10,6 +10,7 @@ provider:
   # S3のバケットに合わせた
   # 他のサービスも全部東京リージョンになるので注意
   region: ap-northeast-1
+  stage: ${opt:stage, "dev"}
 
 functions:
   # rateHandler:
@@ -28,12 +29,19 @@ functions:
       # - schedule: cron(10,30,50 * ? * MON-FRI *)
       - schedule: cron(0 12 ? * FRI *)
     timeout: 60
+    environment:
+      envName: ${self:custom.otherfile.environment.${self:provider.stage}.envName}
 plugins:
   - serverless-layers
 custom:
   serverless-layers:
     layersDeploymentBucket: sls-lambda-node-cron-layer
     # dependenciesPath: ./package.json
+  otherfile:
+    environment:
+      local: ${file(./config/local.yml)}
+      dev: ${file(./config/dev.yml)}
+      prd: ${file(./config/prd.yml)}
 
 # Note:
 # - rateHandler.handler と cronHandler.handlerを両方定義したら、rateHandler のみがAWS側に認識された。
