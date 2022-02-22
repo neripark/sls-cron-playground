@@ -11,7 +11,8 @@ exports.run = async (event, context) => {
 exports.lighthouse = async (event) => {
   console.log("event::", event);
   console.log("process.env.envName::", process.env.envName);
-  console.log("process.env.DATADOG_API_KEY::", process.env.DATADOG_API_KEY);
+  // console.log("process.env.DATADOG_API_KEY::", process.env.DATADOG_API_KEY);
+  console.log("process.env.datadogApiKey::", process.env.datadogApiKey);
 
   // 今は切り離しているので単独で実行
   sendMetricsToDatadog();
