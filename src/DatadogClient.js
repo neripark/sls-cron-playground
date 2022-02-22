@@ -20,7 +20,7 @@ exports.DatadogClient = class {
           points: [
             [
               `${Math.floor(Date.now() / 1000)}`,
-              98 // いったんハドコ
+              Math.floor(Math.random() * 100)
               // `${Math.round(data.numericValue / 10) * 10}`,
             ],
           ],
