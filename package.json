@@ -24,6 +24,7 @@
     "puppeteer-core": "^13.3.2"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.6.1",
     "@types/puppeteer": "^5.4.4",
     "puppeteer": "^13.3.2",
     "serverless": "^3.2.1",

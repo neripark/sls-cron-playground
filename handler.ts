@@ -1,7 +1,7 @@
 'use strict';
 
 import { audit } from "./src/execLighthouse";
-const { sendMetricsToDatadog } = require("./src/sendMetricsToDatadog");
+import { sendMetricsToDatadog } from "./src/sendMetricsToDatadog";
 
 export const run = async (event: any, context: any) => {
   const time = new Date();

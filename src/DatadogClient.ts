@@ -1,18 +1,19 @@
-// const fetch = require("node-fetch");
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 // const { AuditsResult } = require("../@types/lighthouse");
 
-// export class DatadogClient {
-exports.DatadogClient = class {
-  // private apiUrl: string;
+export class DatadogClient {
+// exports.DatadogClient = class {
+  private apiUrl: string;
 
-  // constructor(apiKey: string) {
-  constructor(apiKey) {
+  constructor(apiKey: string | undefined) {
+  // constructor(apiKey) {
+    if (apiKey === undefined) throw new Error("passed undefined on Datadog API key. must be string.");
     this.apiUrl = `https://api.datadoghq.com/api/v1/series?api_key=${apiKey}`;
   }
 
+  async sendMetrics(metricsName: string) {
   // async sendMetrics(metricsName: string, data: AuditsResult) {
-  async sendMetrics(metricsName) {
+  // async sendMetrics(metricsName) {
     const requestBody = JSON.stringify({
       series: [
         {
@@ -39,8 +40,8 @@ exports.DatadogClient = class {
     return await this.post(requestBody);
   }
 
-  // private async post(requestBody: string) {
-  async post(requestBody) {
+  private async post(requestBody: string) {
+  // async post(requestBody) {
     return await fetch(this.apiUrl, {
       method: "POST",
       headers: {
