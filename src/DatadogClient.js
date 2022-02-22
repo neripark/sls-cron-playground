@@ -50,3 +50,46 @@ exports.DatadogClient = class {
     });
   }
 }
+
+
+// ________________________________________________________
+
+// copy from: https://docs.datadoghq.com/ja/api/latest/metrics/#submit-metrics
+// 環境変数を明示的に見に行っていないので、裏で参照している？
+
+// INSTRUCTIONS
+// First install the library and its dependencies and then save the example to example.ts and run following commands:
+
+// export DD_SITE="datadoghq.com" DD_API_KEY="<API-KEY>" DD_APP_KEY="<APP-KEY>" tsc "example.ts"
+
+
+/**
+ * Submit metrics returns "Payload accepted" response
+ */
+
+// import { v1 } from "@datadog/datadog-api-client";
+
+// const configuration = v1.createConfiguration();
+// const apiInstance = new v1.MetricsApi(configuration);
+
+// let params: v1.MetricsApiSubmitMetricsRequest = {
+//   body: {
+//     series: [
+//       {
+//         metric: "system.load.1",
+//         type: "gauge",
+//         points: [[new Date().getTime() / 1000, 1.1]],
+//         tags: ["test:ExampleSubmitmetricsreturnsPayloadacceptedresponse"],
+//       },
+//     ],
+//   },
+// };
+
+// apiInstance
+//   .submitMetrics(params)
+//   .then((data: v1.IntakePayloadAccepted) => {
+//     console.log(
+//       "API called successfully. Returned data: " + JSON.stringify(data)
+//     );
+//   })
+//   .catch((error: any) => console.error(error));
