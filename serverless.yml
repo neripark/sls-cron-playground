@@ -31,8 +31,7 @@ functions:
       - schedule:
           rate: cron(10,30,50 * ? * MON-FRI *)
           input:
-            pageName: "Googleトップ"
-            url: "https://google.com"
+            item: ${self:custom.otherfile.pageList.pages.0}
 
       # - schedule: cron(0 12 ? * FRI *)
     timeout: 60
@@ -51,6 +50,7 @@ custom:
       local: ${file(./config/local.yml)}
       dev: ${file(./config/dev.yml)}
       prd: ${file(./config/prd.yml)}
+    pageList: ${file(./config/pageList.yml)}
 
 # Note:
 # - rateHandler.handler と cronHandler.handlerを両方定義したら、rateHandler のみがAWS側に認識された。

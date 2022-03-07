@@ -1,0 +1,5 @@
+pages:
+  - name: "Googleトップ"
+    url: "https://google.com"
+  - name: "Yahooトップ"
+    url: "https://www.yahoo.co.jp/"
