@@ -24,7 +24,6 @@ export const lighthouse = async (event: Event) => {
   console.log("event::", event);
   console.log("name::", event.targetPage.name);
   console.log("url::", event.targetPage.url);
-  console.log("hoge::", event.hoge);
   console.log("process.env.envName::", process.env.envName);
   // console.log("process.env.DATADOG_API_KEY::", process.env.DATADOG_API_KEY);
   console.log("process.env.datadogApiKey::", process.env.datadogApiKey);

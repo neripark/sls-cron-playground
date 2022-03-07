@@ -31,10 +31,12 @@ functions:
       # lighthouse は Map で並列実行できないので起動プロセスで分ける
       - schedule:
           rate: ${self:custom.config.rate}
+          enabled: false # 実行するときは削除
           input:
             targetPage: ${self:custom.otherfile.pageList.pages.0}
       - schedule:
           rate: ${self:custom.config.rate}
+          enabled: false # 実行するときは削除
           input:
             targetPage: ${self:custom.otherfile.pageList.pages.1}
 
