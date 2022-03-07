@@ -8,8 +8,23 @@ export const run = async (event: any, context: any) => {
   console.log(`Your cron function "${context.functionName}" ran at ${time}, neripark!`);
 };
 
-export const lighthouse = async (event: any) => {
+// _____________________________
+interface Page {
+  name: string;
+  url: string;
+}
+type NativeEvent = any;
+interface ExtendedEvent {
+  targetPage: Page;
+};
+interface Event extends ExtendedEvent, NativeEvent {};
+// _____________________________
+
+export const lighthouse = async (event: Event) => {
   console.log("event::", event);
+  console.log("name::", event.targetPage.name);
+  console.log("url::", event.targetPage.url);
+  console.log("hoge::", event.hoge);
   console.log("process.env.envName::", process.env.envName);
   // console.log("process.env.DATADOG_API_KEY::", process.env.DATADOG_API_KEY);
   console.log("process.env.datadogApiKey::", process.env.datadogApiKey);
