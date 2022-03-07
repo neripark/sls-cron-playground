@@ -28,10 +28,15 @@ functions:
     events:
       # - schedule: cron(10,30,50 * ? * MON-FRI *)
 
+      # lighthouse は Map で並列実行できないので起動プロセスで分ける
       - schedule:
-          rate: cron(10,30,50 * ? * MON-FRI *)
+          rate: ${self:custom.config.rate}
           input:
-            item: ${self:custom.otherfile.pageList.pages.0}
+            targetPage: ${self:custom.otherfile.pageList.pages.0}
+      - schedule:
+          rate: ${self:custom.config.rate}
+          input:
+            targetPage: ${self:custom.otherfile.pageList.pages.1}
 
       # - schedule: cron(0 12 ? * FRI *)
     timeout: 60
@@ -45,6 +50,8 @@ custom:
   serverless-layers:
     layersDeploymentBucket: sls-lambda-node-cron-layer
     # dependenciesPath: ./package.json
+  config:
+    rate: cron(10,30,50 * ? * MON-FRI *) 
   otherfile:
     environment:
       local: ${file(./config/local.yml)}
