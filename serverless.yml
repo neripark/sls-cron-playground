@@ -27,7 +27,20 @@ functions:
     handler: handler.lighthouse
     events:
       # - schedule: cron(10,30,50 * ? * MON-FRI *)
-      - schedule: cron(0 12 ? * FRI *)
+
+      # lighthouse は Map で並列実行できないので起動プロセスで分ける
+      - schedule:
+          rate: ${self:custom.config.rate}
+          enabled: false # 実行するときは削除
+          input:
+            targetPage: ${self:custom.otherfile.pageList.pages.0}
+      - schedule:
+          rate: ${self:custom.config.rate}
+          enabled: false # 実行するときは削除
+          input:
+            targetPage: ${self:custom.otherfile.pageList.pages.1}
+
+      # - schedule: cron(0 12 ? * FRI *)
     timeout: 60
     environment:
       envName: ${self:custom.otherfile.environment.${self:provider.stage}.envName}
@@ -39,11 +52,14 @@ custom:
   serverless-layers:
     layersDeploymentBucket: sls-lambda-node-cron-layer
     # dependenciesPath: ./package.json
+  config:
+    rate: cron(10,30,50 * ? * MON-FRI *) 
   otherfile:
     environment:
       local: ${file(./config/local.yml)}
       dev: ${file(./config/dev.yml)}
       prd: ${file(./config/prd.yml)}
+    pageList: ${file(./config/pageList.yml)}
 
 # Note:
 # - rateHandler.handler と cronHandler.handlerを両方定義したら、rateHandler のみがAWS側に認識された。
