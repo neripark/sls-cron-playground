@@ -15,7 +15,7 @@ export const lighthouse = async (event: any) => {
   console.log("process.env.datadogApiKey::", process.env.datadogApiKey);
 
   // 今は切り離しているので単独で実行
-  sendMetricsToDatadog();
+  // sendMetricsToDatadog();
   // ref: https://chuckwebtips.hatenablog.com/entry/2021/05/14/220648
   return audit();
 };
